@@ -1,0 +1,15 @@
+dotnet run
+
+dotnet watch run
+
+dotnet tool install --global dotnet-ef
+
+
+
+dotnet ef migrations add InitialDB
+
+dotnet ef database update
+
+
+
+
