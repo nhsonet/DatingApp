@@ -5,11 +5,11 @@ dotnet watch run
 dotnet tool install --global dotnet-ef
 
 
-
 dotnet ef migrations add InitialDB
 
 dotnet ef database update
 
 
+dotnet user-secrets set "AppSettings:Token" "super secret key" (Supported only in development, but not in production)
 
 
