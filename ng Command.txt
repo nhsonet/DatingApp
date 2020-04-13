@@ -1,0 +1,4 @@
+Alertifyjs
+Angular JWT
+NGX Bootstrap
+Bootswatch
