@@ -30,8 +30,7 @@ namespace DatingApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(cs => cs.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            //services.AddTransient<Seed>();
+            
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
 
