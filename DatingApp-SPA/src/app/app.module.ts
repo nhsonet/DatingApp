@@ -15,9 +15,11 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 
 import { appRoutes } from './routes';
 import { AuthGuard } from './_guard/auth.guard';
+import { PreventUnsavedChangesGuard } from './_guard/prevent-unsaved-changes.guard';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
+import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
@@ -27,6 +29,7 @@ import { RegisterComponent } from './register/register.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { LikeListComponent } from './like-list/like-list.component';
 import { MessageComponent } from './message/message.component';
 
@@ -51,6 +54,7 @@ export function tokenGetter() {
       MemberListComponent,
       MemberCardComponent,
       MemberDetailComponent,
+      MemberEditComponent,
       LikeListComponent,
       MessageComponent
    ],
@@ -76,9 +80,11 @@ export function tokenGetter() {
       NotificationService,
       UserService,
       AuthGuard,
+      PreventUnsavedChangesGuard,
       ErrorInterceptorProvider,
       MemberListResolver,
       MemberDetailResolver,
+      MemberEditResolver
       // { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
    ],
    bootstrap: [
