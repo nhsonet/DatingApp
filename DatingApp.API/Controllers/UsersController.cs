@@ -43,7 +43,7 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UserForUpdateDTO userForRequest)
+        public async Task<IActionResult> UpdateUser(int id, UserForUpdateDTO userRequest)
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) {
                 return Unauthorized();
@@ -51,7 +51,7 @@ namespace DatingApp.API.Controllers
 
             var userFromRepo = await _datingRepository.GetUser(id);
 
-            _mapper.Map(userForRequest, userFromRepo);
+            _mapper.Map(userRequest, userFromRepo);
 
             if (await _datingRepository.SaveAll()) {
                 return NoContent();

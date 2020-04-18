@@ -42,6 +42,8 @@ namespace DatingApp.API
             services.AddCors();
             services.AddAutoMapper(typeof(Value).Assembly);
 
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
