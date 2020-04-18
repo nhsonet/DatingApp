@@ -23,7 +23,7 @@ export class UserService {
     return this.httpClient.get<User[]>(this.baseUrl + 'users');
   }
 
-  getUser(id): Observable<User> {
+  getUser(id: number): Observable<User> {
     // return this.httpClient.get<User>(this.baseUrl + 'users/' + id, httpOptions);
     return this.httpClient.get<User>(this.baseUrl + 'users/' + id);
   }

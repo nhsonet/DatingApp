@@ -1,4 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/public_api';
+import { User } from './../_models/user';
 import { AuthService } from '../_services/auth.service';
 import { NotificationService } from '../_services/notification.service';
 
@@ -8,21 +12,54 @@ import { NotificationService } from '../_services/notification.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  
-  @Output() cancelRegister = new EventEmitter();
-  model: any = {};
 
-  constructor(private authService: AuthService, private notificationService: NotificationService) { }
+  @Output() cancelRegister = new EventEmitter();
+  user: User;
+  registerForm: FormGroup;
+  bsConfig: Partial<BsDatepickerConfig>;
+
+  constructor(private fb: FormBuilder, private router: Router,
+              private authService: AuthService, private notificationService: NotificationService) { }
 
   ngOnInit() {
+    this.bsConfig = {
+      containerClass: 'theme-red'
+    };
+
+    this.createRegisterForm();
+  }
+
+  createRegisterForm() {
+    this.registerForm = this.fb.group({
+      gender: ['male'],
+      username: ['', Validators.required],
+      knownAs: ['', Validators.required],
+      dateOfBirth: [null, Validators.required],
+      city: ['', Validators.required],
+      country: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(10)]],
+      confirmPassword: ['', Validators.required]
+    }, {validator: this.passwordMatchValidator});
+  }
+
+  passwordMatchValidator(fg: FormGroup) {
+    return fg.get('password').value === fg.get('confirmPassword').value ? null : {'mismatch': true};
   }
 
   register() {
-    this.authService.register(this.model).subscribe(() => {
-      this.notificationService.success('registration successful.');
-    }, error => {
-      this.notificationService.error(error);
-    });
+    if (this.registerForm.valid) {
+      this.user = Object.assign({}, this.registerForm.value);
+
+      this.authService.register(this.user).subscribe(() => {
+        this.notificationService.success('Registration is successful.');
+      }, error => {
+        this.notificationService.error(error);
+      }, () => {
+        this.authService.login(this.user).subscribe(() => {
+          this.router.navigate(['/members']);
+        });
+      });
+    }
   }
 
   cancel() {

@@ -19,8 +19,8 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient) { }
 
-  register(model: any) {
-    return this.httpClient.post(this.baseUrl + 'register', model);
+  register(user: User) {
+    return this.httpClient.post(this.baseUrl + 'register', user);
   }
 
   login(model: any) {

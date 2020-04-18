@@ -13,7 +13,7 @@ import { NotificationService } from 'src/app/_services/notification.service';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() photos: Photo[];
-  @Output() getChangedMemberPhotoUrl = new EventEmitter<string>();
+  // @Output() getChangedMemberPhotoUrl = new EventEmitter<string>();
 
   uploader: FileUploader;
   hasBaseDropZoneOver = false;
@@ -59,6 +59,13 @@ export class PhotoEditorComponent implements OnInit {
         };
 
         this.photos.push(photo);
+
+        if (photo.isMain) {
+          this.authService.changeMemberPhoto(photo.url);
+          this.authService.currentUser.photoUrl = photo.url;
+
+          localStorage.setItem('user', JSON.stringify(this.authService.currentUser));
+        }
       }
     };
   }
