@@ -15,7 +15,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 // import { NgxGalleryModule } from 'ngx-gallery';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
-import { TimeAgoPipe } from 'time-ago-pipe';
+import { TimeagoModule } from 'ngx-timeago';
 
 import { appRoutes } from './routes';
 import { AuthGuard } from './_guard/auth.guard';
@@ -61,7 +61,6 @@ export function tokenGetter() {
       MemberDetailComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      // TimeAgoPipe,
       LikeListComponent,
       MessageComponent
    ],
@@ -77,6 +76,7 @@ export function tokenGetter() {
       TabsModule.forRoot(),
       NgxGalleryModule,
       FileUploadModule,
+      TimeagoModule.forRoot(),
       JwtModule.forRoot({
          config: {
             tokenGetter: tokenGetter,

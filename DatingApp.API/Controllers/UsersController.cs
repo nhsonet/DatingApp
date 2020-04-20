@@ -27,10 +27,12 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await _datingRepository.GetUsers();
+            var users = await _datingRepository.GetUsers(userParams);
             var usersToReturn = _mapper.Map<IEnumerable<UserForListDTO>>(users);
+
+            Response.AddPagination(users.PageNumber, users.PageSize, users.TotalItem, users.TotalPage);
 
             return Ok(usersToReturn);
         }
