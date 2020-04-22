@@ -26,6 +26,7 @@ import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
+import { LikeListResolver } from './_resolvers/like-list.resolver';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
@@ -98,7 +99,8 @@ export function tokenGetter() {
       ErrorInterceptorProvider,
       MemberListResolver,
       MemberDetailResolver,
-      MemberEditResolver
+      MemberEditResolver,
+      LikeListResolver
       // { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
    ],
    bootstrap: [

@@ -11,6 +11,7 @@ import { PreventUnsavedChangesGuard } from './_guard/prevent-unsaved-changes.gua
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
+import { LikeListResolver } from './_resolvers/like-list.resolver';
 
 export const appRoutes: Routes = [
     // { path: '', component: HomeComponent },
@@ -19,10 +20,10 @@ export const appRoutes: Routes = [
     //     runGuardsAndResolvers: 'always',
     //     canActivate: [AuthGuard],
     //     children: [
-    //         { path: 'members', component: MemberListComponent }, resolve: { users: MemberListResolver } },
+    //         { path: 'members', component: MemberListComponent, resolve: { users: MemberListResolver } },
     //         { path: 'members/:id', component: MemberDetailComponent, canDeactivate: [PreventUnsavedChangesGuard], resolve: { user: MemberDetailResolver } },
     //         { path: 'member/edit', component: MemberEditComponent, resolve: { user: MemberEditResolver } },
-    //         { path: 'likes', component: LikeListComponent },
+    //         { path: 'likes', component: LikeListComponent, resolve: { users: LikeListResolver } },
     //         { path: 'messages', component: MessageComponent }
     //     ]
     // },
@@ -39,7 +40,8 @@ export const appRoutes: Routes = [
     { path: 'member/edit', component: MemberEditComponent, canActivate: [AuthGuard], canDeactivate: [PreventUnsavedChangesGuard],
         resolve: { user: MemberEditResolver } },
 
-    { path: 'likes', component: LikeListComponent, canActivate: [AuthGuard] },
+    { path: 'likes', component: LikeListComponent, canActivate: [AuthGuard],
+        resolve: { users: LikeListResolver } },
     { path: 'messages', component: MessageComponent, canActivate: [AuthGuard] },
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
