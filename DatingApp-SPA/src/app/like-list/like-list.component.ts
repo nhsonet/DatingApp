@@ -4,7 +4,7 @@ import { User } from '../_models/user';
 import { AuthService } from './../_services/auth.service';
 import { UserService } from './../_services/user.service';
 import { NotificationService } from 'src/app/_services/notification.service';
-import { IPagination, PaginatedResult } from './../_models/pagination';
+import { Pagination, PaginatedResult } from './../_models/pagination';
 
 @Component({
   selector: 'app-like-list',
@@ -13,7 +13,7 @@ import { IPagination, PaginatedResult } from './../_models/pagination';
 })
 export class LikeListComponent implements OnInit {
   users: User[];
-  pagination: IPagination;
+  pagination: Pagination;
   likeParam: string;
 
   constructor(private authService: AuthService, private userService: UserService, private notificationService: NotificationService,

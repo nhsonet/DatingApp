@@ -109,10 +109,52 @@ namespace DatingApp.API.Data
             return await _context.Like.FirstOrDefaultAsync(x => x.LikerId == userId && x.LikeeId == recipientId);
         }
 
+        public async Task<Message> GetMessage(int id)
+        {
+            return await _context.Message.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<PagedList<Message>> GetMessagsForUser(MessageParams messageParams)
+        {
+            var messages = _context.Message
+                .Include(i => i.Sender).ThenInclude(i => i.Photos).Include(i => i.Recipient).ThenInclude(i => i.Photos)
+                .AsQueryable();
+
+            switch (messageParams.MessageContainer)
+            {
+                case "Inbox":
+                    messages = messages.Where(w => w.RecipientId == messageParams.UserId);
+                    break;
+
+                case "Outbox":
+                    messages = messages.Where(w => w.SenderId == messageParams.UserId);
+                    break;
+
+                default:
+                    messages = messages.Where(w => w.RecipientId == messageParams.UserId && w.IsRead == false);
+                    break;
+            }
+
+            messages = messages.OrderByDescending(o => o.SentAt);
+            return await PagedList<Message>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
+        }
+
+        public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+        {
+            var messages = await _context.Message
+                .Include(i => i.Sender).ThenInclude(i => i.Photos).Include(i => i.Recipient).ThenInclude(i => i.Photos)
+                .Where(w => w.RecipientId == userId && w.SenderId == recipientId ||
+                            w.RecipientId == recipientId && w.SenderId == userId)
+                .OrderByDescending(o => o.SentAt)
+                .ToListAsync();
+
+            return messages;
+        }
+
         public async Task<bool> SaveAll()
         {
             return await _context.SaveChangesAsync() > 0;
         }
-
+        
     }
 }

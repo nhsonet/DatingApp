@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from '../../_models/user';
 import { UserService } from '../../_services/user.service';
 import { NotificationService } from '../../_services/notification.service';
-import { IPagination, PaginatedResult } from './../../_models/pagination';
+import { Pagination, PaginatedResult } from './../../_models/pagination';
 
 @Component({
   selector: 'app-member-list',
@@ -16,7 +16,7 @@ export class MemberListComponent implements OnInit {
   genderList = [{value: 'male', displayName: 'Males'}, {value: 'female', displayName: 'Females'}];
 
   userParams: any = {};
-  pagination: IPagination;
+  pagination: Pagination;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private notificationService: NotificationService) { }
 

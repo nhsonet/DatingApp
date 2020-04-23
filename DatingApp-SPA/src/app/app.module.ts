@@ -27,6 +27,7 @@ import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { LikeListResolver } from './_resolvers/like-list.resolver';
+import { MessageResolver } from './_resolvers/message.resolver';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
@@ -100,7 +101,8 @@ export function tokenGetter() {
       MemberListResolver,
       MemberDetailResolver,
       MemberEditResolver,
-      LikeListResolver
+      LikeListResolver,
+      MessageResolver
       // { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
    ],
    bootstrap: [
