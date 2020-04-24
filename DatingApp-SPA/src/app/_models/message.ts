@@ -1,7 +1,7 @@
 export interface Message {
     id: number;
     senderId: number;
-    senderKnowAs: string;
+    senderKnownAs: string;
     senderPhotoUrl: string;
     recipientId: number;
     recipientKnownAs: string;

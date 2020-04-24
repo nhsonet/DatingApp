@@ -83,6 +83,13 @@ namespace DatingApp.API.Controllers
                 return Unauthorized();
             }
 
+            var sender = await _datingRepository.GetUser(userId);
+
+            if (sender == null)
+            {
+                return BadRequest("Could not find sender.");
+            }
+
             messageRequest.SenderId = userId;
 
             var recipient = await _datingRepository.GetUser(messageRequest.RecipientId);
@@ -96,14 +103,67 @@ namespace DatingApp.API.Controllers
 
             _datingRepository.Add(message);
 
-            var messageToReturn = _mapper.Map<MessageForAddDTO>(message);
-
             if (await _datingRepository.SaveAll())
             {
+                var messageToReturn = _mapper.Map<MessageForReturnDTO>(message);
                 return CreatedAtRoute("GetMessage", new {userId, id = message.Id}, messageToReturn);
             }
 
             throw new Exception("Creating message failed on save.");
+        }
+
+        [HttpPost("{id}/read")]
+        public async Task<IActionResult> MarkMessageAsRead(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) {
+                return Unauthorized();
+            }
+
+            var message = await _datingRepository.GetMessage(id);
+
+            if (message.RecipientId != userId)
+            {
+                return Unauthorized();
+            }
+
+            message.IsRead = true;
+            message.ReadAt = DateTime.Now;
+
+            await _datingRepository.SaveAll();
+
+            return NoContent();
+        }
+
+        [HttpPost("{id}")]
+        public async Task<IActionResult> DeleteMessage(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) {
+                return Unauthorized();
+            }
+
+            var messagesFromRepo = await _datingRepository.GetMessage(id);
+
+            if (messagesFromRepo.SenderId == userId)
+            {
+                messagesFromRepo.IsDeletedBySender = true;
+            }
+
+            if (messagesFromRepo.RecipientId == userId)
+            {
+                messagesFromRepo.IsDeletedByRecipient = true;
+            }
+
+            if (messagesFromRepo.IsDeletedBySender && messagesFromRepo.IsDeletedByRecipient)
+            {
+                _datingRepository.Remove(messagesFromRepo);
+            }
+
+            if (await _datingRepository.SaveAll())
+            {
+                return NoContent();
+            }
+
+            throw new Exception("Deleting message failed.");
         }
 
     }

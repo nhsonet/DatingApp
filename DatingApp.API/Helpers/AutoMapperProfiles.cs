@@ -43,7 +43,7 @@ namespace DatingApp.API.Helpers
 
             CreateMap<Photo, PhotoForReturnDTO>();
 
-            CreateMap<MessageForAddDTO, Message>().ReverseMap();
+            CreateMap<MessageForAddDTO, Message>();
 
             CreateMap<Message, MessageForReturnDTO>()
                 .ForMember(dest => dest.SenderPhotoUrl,

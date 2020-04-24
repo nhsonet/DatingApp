@@ -63,28 +63,28 @@ export class UserService {
                           );
   }
 
-  getUser(id: number): Observable<User> {
-    // return this.httpClient.get<User>(this.baseUrl + 'users/' + id, httpOptions);
-    return this.httpClient.get<User>(this.baseUrl + 'users/' + id);
+  getUser(userId: number): Observable<User> {
+    // return this.httpClient.get<User>(this.baseUrl + 'users/' + userId, httpOptions);
+    return this.httpClient.get<User>(this.baseUrl + 'users/' + userId);
   }
 
-  updateUser(id: number, user: User) {
-    return this.httpClient.put(this.baseUrl + 'users/' + id, user);
+  updateUser(userId: number, user: User) {
+    return this.httpClient.put(this.baseUrl + 'users/' + userId, user);
   }
 
-  setMainPhoto(userId: number, id: number) {
-    return this.httpClient.post(this.baseUrl + 'users/' + userId + '/photos/' + id + '/setMainPhoto', {});
+  setMainPhoto(userId: number, photoId: number) {
+    return this.httpClient.post(this.baseUrl + 'users/' + userId + '/photos/' + photoId + '/setMainPhoto', {});
   }
 
-  deletePhoto(userId: number, id: number) {
-    return this.httpClient.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
+  deletePhoto(userId: number, photoId: number) {
+    return this.httpClient.delete(this.baseUrl + 'users/' + userId + '/photos/' + photoId);
   }
 
-  sendLike(id: number, recipientId: number) {
-    return this.httpClient.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
+  sendLike(userId: number, recipientId: number) {
+    return this.httpClient.post(this.baseUrl + 'users/' + userId + '/like/' + recipientId, {});
   }
 
-  getMessages(id: number, currentPage?, itemsPerPage?, messageContainer?) {
+  getMessages(userId: number, currentPage?, itemsPerPage?, messageContainer?) {
     const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
 
     let httpParams = new HttpParams();
@@ -96,7 +96,7 @@ export class UserService {
 
     httpParams = httpParams.append('MessageContainer', messageContainer);
 
-    return this.httpClient.get<Message[]>(this.baseUrl + 'users/' + id + '/messages' + { observe: 'response', params: httpParams })
+    return this.httpClient.get<Message[]>(this.baseUrl + 'users/' + userId + '/messages', { observe: 'response', params: httpParams })
                           .pipe(
                             map(response => {
                               paginatedResult.result = response.body;
@@ -108,6 +108,22 @@ export class UserService {
                               return paginatedResult;
                             })
                           );
+  }
+
+  getMessageThread(userId: number, recipientId: number) {
+    return this.httpClient.get<Message[]>(this.baseUrl + 'users/' + userId + '/messages/thread/' + recipientId);
+  }
+
+  sendMessage(userId: number, message: Message) {
+    return this.httpClient.post(this.baseUrl + 'users/' + userId + '/messages', message);
+  }
+
+  markMessageAsRead(userId: number, id: number) {
+    this.httpClient.post(this.baseUrl + 'users/' + userId + '/messages/' + id + '/read', {});
+  }
+
+  deleteMessage(userId: number, messageId: number) {
+    return this.httpClient.post(this.baseUrl + 'users/' + userId + '/messages/' + messageId, {});
   }
 
 }
