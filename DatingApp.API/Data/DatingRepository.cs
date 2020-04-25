@@ -28,7 +28,11 @@ namespace DatingApp.API.Data
 
         private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
         {
+            // eager loading
             var user = await _context.User.Include(i => i.Likers).Include(i => i.Likees).FirstOrDefaultAsync(x => x.Id == id);
+
+            // lazy loading
+            // var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
 
             if (likers)
             {
@@ -42,9 +46,12 @@ namespace DatingApp.API.Data
 
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
+            // eager loading
             // var users = await _context.User.Include(i => i.Photos).ToListAsync();
-
             var users = _context.User.Include(i => i.Photos).OrderByDescending(o => o.LastActive).AsQueryable();
+
+            // lazy loading
+            // var users = _context.User.OrderByDescending(o => o.LastActive).AsQueryable();
 
             users = users.Where(w => w.Id != userParams.UserId);
             users = users.Where(w => w.Gender == userParams.Gender);
@@ -87,7 +94,11 @@ namespace DatingApp.API.Data
 
         public async Task<User> GetUser(int id)
         {
+            // eager loading
             var user = await _context.User.Include(i => i.Photos).FirstOrDefaultAsync(x => x.Id == id);
+
+            // lazy loading
+            // var user = await _context.User.FirstOrDefaultAsync(x => x.Id == id);
 
             return user;
         }
@@ -116,9 +127,13 @@ namespace DatingApp.API.Data
 
         public async Task<PagedList<Message>> GetMessagsForUser(MessageParams messageParams)
         {
+            // eager loading
             var messages = _context.Message
                 .Include(i => i.Sender).ThenInclude(i => i.Photos).Include(i => i.Recipient).ThenInclude(i => i.Photos)
                 .AsQueryable();
+
+            // lazy loading
+            // var messages = _context.Message.AsQueryable();
 
             switch (messageParams.MessageContainer)
             {
@@ -142,12 +157,20 @@ namespace DatingApp.API.Data
 
         public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
         {
+            // eager loading
             var messages = await _context.Message
                 .Include(i => i.Sender).ThenInclude(i => i.Photos).Include(i => i.Recipient).ThenInclude(i => i.Photos)
                 .Where(w => w.RecipientId == userId && w.IsDeletedByRecipient == false && w.SenderId == recipientId ||
                             w.RecipientId == recipientId && w.SenderId == userId && w.IsDeletedBySender == false)
                 .OrderByDescending(o => o.SentAt)
                 .ToListAsync();
+
+            // lazy loading
+            // var messages = await _context.Message
+            //     .Where(w => w.RecipientId == userId && w.IsDeletedByRecipient == false && w.SenderId == recipientId ||
+            //                 w.RecipientId == recipientId && w.SenderId == userId && w.IsDeletedBySender == false)
+            //     .OrderByDescending(o => o.SentAt)
+            //     .ToListAsync();
 
             return messages;
         }

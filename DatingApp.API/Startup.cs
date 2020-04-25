@@ -26,11 +26,29 @@ namespace DatingApp.API
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            services.AddDbContext<DataContext>(cs => {
+                //cs.UseLazyLoadingProxies();
+                cs.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            ConfigureServices(services);
+        }
+
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            services.AddDbContext<DataContext>(cs => {
+                //cs.UseLazyLoadingProxies();
+                cs.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            ConfigureServices(services);
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(cs => cs.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddScoped<LogUserActivity>();
@@ -84,15 +102,20 @@ namespace DatingApp.API
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
             app.UseAuthentication();
 
             app.UseAuthorization();
 
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            app.UseDefaultFiles();
+
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }

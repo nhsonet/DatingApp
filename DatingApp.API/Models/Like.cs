@@ -7,5 +7,9 @@ namespace DatingApp.API.Models
 
         public User Liker { get; set; }
         public User Likee { get; set; }
+
+        // lazy loading
+        // public virtual User Liker { get; set; }
+        // public virtual User Likee { get; set; }
     }
 }

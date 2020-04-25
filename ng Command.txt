@@ -1,4 +1,6 @@
 Alertifyjs
+NGX Toastr
+
 Angular JWT
 NGX Bootstrap
 Bootswatch

@@ -13,3 +13,6 @@ dotnet ef database update
 dotnet user-secrets set "AppSettings:Token" "super secret key" (Supported only in development, but not in production)
 
 
+export ASPNETCORE_ENVIRONMENT=Production
+dotnet publish --configuration Release
+
