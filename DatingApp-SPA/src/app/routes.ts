@@ -1,9 +1,10 @@
-import { MemberEditComponent } from './members/member-edit/member-edit.component';
-import { MessageComponent } from './message/message.component';
+import { HomeComponent } from './home/home.component';
 import { LikeListComponent } from './like-list/like-list.component';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
-import { HomeComponent } from './home/home.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { MessageComponent } from './message/message.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 
 import { Routes } from '@angular/router';
 import { AuthGuard } from './_guard/auth.guard';
@@ -26,6 +27,7 @@ export const appRoutes: Routes = [
     //         { path: 'member/edit', component: MemberEditComponent, resolve: { user: MemberEditResolver } },
     //         { path: 'likes', component: LikeListComponent, resolve: { users: LikeListResolver } },
     //         { path: 'messages', component: MessageComponent, resolve: { messages: MessageResolver } },
+    //         { path: 'admin', component: AdminPanelComponent },
     //     ]
     // },
     // { path: '**', redirectTo: '', pathMatch: 'full' }
@@ -46,6 +48,8 @@ export const appRoutes: Routes = [
 
     { path: 'messages', component: MessageComponent, canActivate: [AuthGuard],
         resolve: { messages: MessageResolver } },
+
+    { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard], data: {roles: ['Admin', 'Moderator']} },
 
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];

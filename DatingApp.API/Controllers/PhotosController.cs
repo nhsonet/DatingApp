@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 
 namespace DatingApp.API.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/users/{userId}/photos")]
     [ApiController]
     public class PhotosController : ControllerBase
@@ -37,7 +37,7 @@ namespace DatingApp.API.Controllers
         [HttpGet("{id}", Name = "GetPhoto")]
         public async Task<IActionResult> GetPhoto(int id)
         {
-            var photoFromRepo = await _datingRepository.GetPhoto(id);
+            var photoFromRepo = await _datingRepository.GetPhoto(id, true);
 
             var photo = _mapper.Map<PhotoForReturnDTO>(photoFromRepo);
 
@@ -53,7 +53,7 @@ namespace DatingApp.API.Controllers
             }
 
             var uploadResults = new ImageUploadResult();
-            var userFromRepo = await _datingRepository.GetUser(userId);
+            var userFromRepo = await _datingRepository.GetUser(userId, true);
             var file = photoRequest.File;
 
             if (file.Length > 0)
@@ -100,14 +100,14 @@ namespace DatingApp.API.Controllers
                 return Unauthorized();
             }
 
-            var userFromRepo = await _datingRepository.GetUser(userId);
+            var userFromRepo = await _datingRepository.GetUser(userId, true);
 
             if (!userFromRepo.Photos.Any(a => a.Id == id))
             {
                 return Unauthorized();
             }
 
-            var photoFromRepo = await _datingRepository.GetPhoto(id);
+            var photoFromRepo = await _datingRepository.GetPhoto(id, true);
 
             if (photoFromRepo.IsMain)
             {
@@ -135,14 +135,14 @@ namespace DatingApp.API.Controllers
                 return Unauthorized();
             }
 
-            var userFromRepo = await _datingRepository.GetUser(userId);
+            var userFromRepo = await _datingRepository.GetUser(userId, true);
 
             if (!userFromRepo.Photos.Any(a => a.Id == id))
             {
                 return Unauthorized();
             }
 
-            var photoFromRepo = await _datingRepository.GetPhoto(id);
+            var photoFromRepo = await _datingRepository.GetPhoto(id, true);
 
             if (photoFromRepo.IsMain)
             {

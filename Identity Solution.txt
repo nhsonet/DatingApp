@@ -1,0 +1,7 @@
+Include Package
+Extend Models
+Update DataContext
+Update Startup
+Update Seed
+Update Controller
+Update Migration

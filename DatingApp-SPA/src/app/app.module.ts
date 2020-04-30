@@ -1,6 +1,7 @@
+import { AuthService } from './_services/auth.service';
+import { AdminService } from './_services/admin.service';
 import { NotificationService } from 'src/app/_services/notification.service';
 import { UserService } from './_services/user.service';
-import { AuthService } from './_services/auth.service';
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
@@ -8,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -43,6 +45,12 @@ import { LikeListComponent } from './like-list/like-list.component';
 import { MessageComponent } from './message/message.component';
 import { MemberMessageComponent } from './members/member-message/member-message.component';
 
+import { HasRoleDirective } from './_directives/hasRole.directive';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { RoleModalComponent } from './admin/role-modal/role-modal.component';
+
 export function tokenGetter() {
    return localStorage.getItem('token');
 }
@@ -68,7 +76,12 @@ export function tokenGetter() {
       PhotoEditorComponent,
       LikeListComponent,
       MessageComponent,
-      MemberMessageComponent
+      MemberMessageComponent,
+      HasRoleDirective,
+      AdminPanelComponent,
+      UserManagementComponent,
+      PhotoManagementComponent,
+      RoleModalComponent
    ],
    imports: [
       BrowserModule,
@@ -77,6 +90,7 @@ export function tokenGetter() {
       RouterModule.forRoot(appRoutes),
       FormsModule,
       ReactiveFormsModule,
+      ModalModule.forRoot(),
       PaginationModule.forRoot(),
       ButtonsModule.forRoot(),
       BsDatepickerModule.forRoot(),
@@ -95,6 +109,7 @@ export function tokenGetter() {
    ],
    providers: [
       AuthService,
+      AdminService,
       NotificationService,
       UserService,
       AuthGuard,
@@ -106,6 +121,9 @@ export function tokenGetter() {
       LikeListResolver,
       MessageResolver
       // { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
+   ],
+   entryComponents: [
+      RoleModalComponent
    ],
    bootstrap: [
       AppComponent

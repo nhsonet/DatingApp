@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.API.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [ServiceFilter(typeof(LogUserActivity))]
     [Route("api/users/{userId}/[controller]")]
     [ApiController]
@@ -83,7 +83,7 @@ namespace DatingApp.API.Controllers
                 return Unauthorized();
             }
 
-            var sender = await _datingRepository.GetUser(userId);
+            var sender = await _datingRepository.GetUser(userId, false);
 
             if (sender == null)
             {
@@ -92,7 +92,7 @@ namespace DatingApp.API.Controllers
 
             messageRequest.SenderId = userId;
 
-            var recipient = await _datingRepository.GetUser(messageRequest.RecipientId);
+            var recipient = await _datingRepository.GetUser(messageRequest.RecipientId, false);
 
             if (recipient == null)
             {
